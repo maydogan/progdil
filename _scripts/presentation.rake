@@ -1,10 +1,18 @@
-
+# pathname, pythonconfig, yaml kullan
 require 'pathname'
 require 'pythonconfig'
 require 'yaml'
 
+
+# Site yapılandırmasında sunumlara ait bölümü al
 CONFIG = Config.fetch('presentation', {})
 
+# presentation:
+#             directory:
+#             conffile:
+
+
+# Sunum dizini
 PRESENTATION_DIR = CONFIG.fetch('directory', 'p')
 DEFAULT_CONFFILE = CONFIG.fetch('conffile', '_templates/presentation.cfg')
 INDEX_FILE = File.join(PRESENTATION_DIR, 'index.html')
