@@ -2,7 +2,7 @@
 # ------------------------------------------------------------------------------
 # Landslide Sunumları için Görevler
 # ------------------------------------------------------------------------------
-
+#~ pathname, pythonconfig, yaml kullan
 require 'pathname'
 require 'pythonconfig'
 require 'yaml'
