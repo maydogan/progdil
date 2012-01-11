@@ -1,34 +1,23 @@
-# Encoding: utf-8
-# ------------------------------------------------------------------------------
-# Landslide Sunumları için Görevler
-# ------------------------------------------------------------------------------
 #~ pathname, pythonconfig, yaml kullan
 require 'pathname'
 require 'pythonconfig'
 require 'yaml'
 
-# Site yapılandırmasında sunumlara ait bölümü al
-CONFIG = Config.fetch('presentation', {})
-
-#***********************
-# presentation:
-#             directory:
-#             conffile:
 
 # Sunum dizini
-PRESENTATION_DIR = CONFIG.fetch('directory', 'p')
+PRESENTATION_DIR = CONFIG.fetch('directory', 'p')  #~  
 # Öntanımlı landslide yapılandırması
-DEFAULT_CONFFILE = CONFIG.fetch('conffile', '_templates/presentation.cfg') #~ 1.si varsa 1.sini al eğer yoksa 2.cisini al
+DEFAULT_CONFFILE = CONFIG.fetch('conffile', '_templates/presentation.cfg')  #~ 1.si varsa 1.sini al eğer yoksa 2.cisini al
 # Sunum indeksi
-INDEX_FILE = File.join(PRESENTATION_DIR, 'index.html') #~ "/" ile birleştir
+INDEX_FILE = File.join(PRESENTATION_DIR, 'index.html')  #~ "/" ile birleştir
 # İzin verilen en büyük resim boyutları
-IMAGE_GEOMETRY = [ 733, 550 ]
+IMAGE_GEOMETRY = [ 733, 550 ]  #~ Resmin boyutları 733, 550 olsun
 # Bağımlılıklar için yapılandırmada hangi anahtarlara bakılacak
-DEPEND_KEYS    = %w(source css js) #~ list ["source", "css", "js"].. Source, css, js' yi listele
+DEPEND_KEYS    = %w(source css js)  #~ list ["source", "css", "js"].. source, css, js' yi listele
 # Vara daima bağımlılık verilecek dosya/dizinler
-DEPEND_ALWAYS  = %w(media)
+DEPEND_ALWAYS  = %w(media) #~ 
 # Hedef Görevler ve tanımları
-TASKS = { #~ HASH oluştur
+TASKS = { #~ HASH oluştur, içerisie aşağıdaki çiftleri yerleştir
     :index   => 'sunumları indeksle',
     :build   => 'sunumları oluştur',
     :clean   => 'sunumları temizle',
@@ -69,19 +58,19 @@ def png_optim(file, threshold=40000)
   return if File.new(file).size < threshold
   sh "pngnq -f -e .png-nq #{file}"
   out = "#{file}-nq"
-  if File.exist?(out)
+  if File.exist?(out) 
     $?.success? ? File.rename(out, file) : File.delete(out)
   end
   #~ Resmin işlendiğini belirtmek için not düş
   png_comment(file, 'raked')
 end
 
-def jpg_optim(file)
+def jpg_optim(file) #~
   sh "jpegoptim -q -m80 #{file}"
   sh "mogrify -comment 'raked' #{file}"
 end
 
-def optim
+def optim #~
   pngs, jpgs = FileList["**/*.png"], FileList["**/*.jpg", "**/*.jpeg"]
 
   # Optimize edilmişleri çıkar
@@ -114,7 +103,7 @@ def optim
 end
 
 # Alt dizinlerde yapılandırma dosyasına mutlak dosya yoluyla erişiyoruz
-default_conffile = File.expand_path(DEFAULT_CONFFILE) #~ DEFAULT_CONFFILE dosyasının tam yolunu al
+default_conffile = File.expand_path(DEFAULT_CONFFILE)  #~ DEFAULT_CONFFILE dosyasının tam yolunu al
 
 # Sunum bilgilerini üret
 FileList[File.join(PRESENTATION_DIR, "[^_.]*")].each do |dir| #~ Dir['*'] '_' ile başlamayan tüm dizinleri getir
@@ -127,7 +116,7 @@ FileList[File.join(PRESENTATION_DIR, "[^_.]*")].each do |dir| #~ Dir['*'] '_' il
       PythonConfig::ConfigParser.new(f)
     end
 
-    landslide = config['landslide']
+    landslide = config['landslide'] #~
     if ! landslide #~ landslide yoksa hata ver
       $stderr.puts "#{dir}: 'landslide' bölümü tanımlanmamış"
       exit 1
@@ -139,19 +128,20 @@ FileList[File.join(PRESENTATION_DIR, "[^_.]*")].each do |dir| #~ Dir['*'] '_' il
     end
 
     if File.exists?('index.md') #~ index.md dosyası yoksa
-      base = 'index'
+      base = 'index' #~ base index olsun
       ispublic = true #~ Genel bir tek şablon sunum/slayt vardır
     elsif File.exists?('presentation.md') # presentation.mf yok ise
-      base = 'presentation'
+      base = 'presentation' #~ base presentation olsun
       ispublic = false #~ Çoklu bir şablon sunum/slayt vardır
     else
-      $stderr.puts "#{dir}: sunum kaynağı 'presentation.md' veya 'index.md' olmalı"
-      exit 1
+      $stderr.puts "#{dir}: sunum kaynağı 'presentation.md' veya 'index.md' olmalı" #~ Diğer durumda  "sunum kaynağı presentation.md veya index.md olmalı" 
+      #~şeklinde hata versin 
+            exit 1
     end
     #~ Sunumun html sayfası  ve resmi için ayarlar
-    basename = base + '.html'
-    thumbnail = File.to_herepath(base + '.png') #~ Resmin tam yolu
-    target = File.to_herepath(basename) #~ html sayfanın(sunum) tam yolu
+    basename = base + '.html' #~ basename = basedeğişkeni.html şeklinde olsun
+    thumbnail = File.to_herepath(base + '.png') #~ Resmin tam yolunu tanımla
+    target = File.to_herepath(basename) #~ html sayfanın(sunum) tam yolunu tanımla
 
     # bağımlılık verilecek tüm dosyaları listele
     deps = []
@@ -169,7 +159,7 @@ FileList[File.join(PRESENTATION_DIR, "[^_.]*")].each do |dir| #~ Dir['*'] '_' il
     tags = []
 
    presentation[dir] = { #~ global presentation
-      :basename  => basename,	# üreteceğimiz sunum dosyasının baz adı
+      :basename  => basename,	#~ üretilecek sunum dosyasının baz adı
       :conffile  => conffile,	# landslide konfigürasyonu (mutlak dosya yolu)
       :deps      => deps,	# sunum bağımlılıkları                           #~ css vs..
       :directory => dir,	# sunum dizini (tepe dizine göreli)
@@ -183,8 +173,8 @@ FileList[File.join(PRESENTATION_DIR, "[^_.]*")].each do |dir| #~ Dir['*'] '_' il
 end
 
 # TODO etiket bilgilerini üret
-presentation.each do |k, v| #~ Tagları(Etiket) üretmeye çalış
-  v[:tags].each do |t|
+presentation.each do |k, v|   #~ Tagları(Etiket) üretmeye çalış
+  v[:tags].each do |t|  
     tag[t] ||= []
     tag[t] << k
   end
