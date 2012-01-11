@@ -3,6 +3,7 @@ require 'pathname'
 require 'pythonconfig'
 require 'yaml'
 
+CONFIG = Config.fetch('presentation', {}) #~ Yapılandırmada presentation' a ait bölümleri al
 
 # Sunum dizini
 PRESENTATION_DIR = CONFIG.fetch('directory', 'p')  #~  
