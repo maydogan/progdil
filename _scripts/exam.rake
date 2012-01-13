@@ -22,7 +22,7 @@ task :md do
     # create yaml to markdown
     File.open(_exam_outfile_md, "w") do |f|
       f.puts "# #{_exam['title']}"
-      _exam['q'].collect do |question|
+      _exam['q'].each do |question|
         f.puts "- #{File.read("_includes/q/#{question[0]}")}\n"
         f.puts "![foo](_includes/q/media/#{question[1]})\n\n"
       end

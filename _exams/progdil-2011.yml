@@ -1,8 +1,8 @@
 title: Programlama Dilleri Final
-footer: Süreniz 100 dk Başarılar Dilerim :)
+footer: Süreniz 100 dk Başarılar Dilerim, Kopya Çekmeyin :)
 q:
-  - ornek-bir-soru
-  - diger-ornek-soru
+  - [ornek-bir-soru, 19.png]
+  - [diger-ornek-soru, code.png]
 
 
 
