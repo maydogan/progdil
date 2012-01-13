@@ -299,7 +299,7 @@ presentation.each do |presentation, data|   # Sunumlarda dolaş ve
     task :default => :build    # $rake default:
 			       # build görevine bağlıdır.
   end
-  
+
   # ns isim uzayının içinde gez ve herbir elemana map yaparak tasktab' a maplenmiş halini kaydet
   ns.tasks.map(&:to_s).each do |t|
     _, _, name = t.partition(":").map(&:to_sym)
@@ -308,7 +308,7 @@ presentation.each do |presentation, data|   # Sunumlarda dolaş ve
   end
 end
 
-# p isim uzayını oluştur, görev ve tanımlamalarını kullanıcıya göster 
+# p isim uzayını oluştur, görev ve tanımlamalarını kullanıcıya göster
 namespace :p do
   tasktab.each do |name, info|
     desc info[:desc]             # desc fonksiyonu yardımıyla kullanıcıya bilgi göster
@@ -320,7 +320,7 @@ namespace :p do
 		   # ör:
                    # index
                    # ---
-    
+
     # INDEX_FILE varsa al, yoksa "{}" ->> boş sözlük  al
     index = YAML.load_file(INDEX_FILE) || {}
     presentations = presentation.values.select { |v| v[:public] }.map { |v| v[:directory] }.sort
