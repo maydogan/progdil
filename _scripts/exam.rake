@@ -15,7 +15,7 @@ task :exam => [:md, :pdf]
 
 task :md do
   puts "yaml' dan markdown üretiliyor... "
-  Dir["_exams/*.yml"].each do |yaml|
+  FileList["_exams/*.yml"].each do |yaml|
     _exam = YAML.load(File.open(yaml))
     _exam_outfile_md = "_exams/#{File.basename(yaml).split('.')[0]}.md"
 
@@ -34,7 +34,7 @@ end
 
 task :pdf do
   puts "markdown' dan pdf üretiliyor..."
-  Dir["_exams/*.md"].each do |markdown|
+  FileList["_exams/*.md"].each do |markdown|
     _exam_outfile = "_exams/#{File.basename(markdown).split('.')[0]}"
     sh "markdown2pdf #{_exam_outfile}.md > #{_exam_outfile}.pdf"
   end
