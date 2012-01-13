@@ -55,9 +55,9 @@ def png_comment(file, string)
 end
 
 def png_optim(file, threshold=40000)
-  #~ Belli bir eşik değerine(40000) göre resmi optime ederek
-  return if File.new(file).size < threshold
-  sh "pngnq -f -e .png-nq #{file}"
+  #~ Belli bir eşik değerine(40000) göre resmi optime et
+  return if File.new(file).size < threshold # Dosyanın boyutu threshold' dan küçükse geri dön
+  sh "pngnq -f -e .png-nq #{file}" # değilse ???
   out = "#{file}-nq"
   if File.exist?(out) 
     $?.success? ? File.rename(out, file) : File.delete(out)
@@ -173,11 +173,11 @@ FileList[File.join(PRESENTATION_DIR, "[^_.]*")].each do |dir| #~ Dir['*'] '_' il
   end
 end
 
-# TODO etiket bilgilerini üret
-presentation.each do |k, v|   #~ Tagları(Etiket) üretmeye çalış
+# Boş taglara atama yap
+presentation.each do |k, v|   # Yukarda tanımlanan hash'de dolaş. 
   v[:tags].each do |t|  
-    tag[t] ||= []
-    tag[t] << k
+    tag[t] ||= []             # Eğer ki tags etiketi boş ise
+    tag[t] << k               # k verisini ekle
   end
 end
 
